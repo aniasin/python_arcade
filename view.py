@@ -13,7 +13,7 @@ def scroll(gi):
         changed = True
     # Scroll right
     right_boundary = gi.view_left + game.SCREEN_WIDTH - game.RIGHT_VIEWPORT_MARGIN
-    if gi.player.left > right_boundary:
+    if gi.player.right > right_boundary:
         gi.view_left += gi.player.right - right_boundary
         changed = True
     # Scroll up
@@ -27,7 +27,7 @@ def scroll(gi):
         gi.view_bottom -= bottom_boundary - gi.player.bottom
         changed = True
 
-    if changed:
+#    if changed:
         gi.view_bottom = int(gi.view_bottom)
         gi.view_left = int(gi.view_left)
 

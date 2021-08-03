@@ -21,10 +21,10 @@ PLAYER_JUMP_SPEED = 20
 PLAYER_MOVEMENT_SPEED = 5
 
 # How many pixels to keep as minimum margin between player and edge of screen
-LEFT_VIEWPORT_MARGIN = 250
-RIGHT_VIEWPORT_MARGIN = 250
-BOTTOM_VIEWPORT_MARGIN = 50
-TOP_VIEWPORT_MARGIN = 100
+LEFT_VIEWPORT_MARGIN = 50
+RIGHT_VIEWPORT_MARGIN = 300
+BOTTOM_VIEWPORT_MARGIN = 150
+TOP_VIEWPORT_MARGIN = 150
 
 
 class MyGame(arcade.Window):
@@ -35,14 +35,13 @@ class MyGame(arcade.Window):
         # Call the parent class and set up the window
         super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
 
+        self.set_update_rate(1/60)
+
         # These are 'lists' that keep track of our sprites. Each sprite should
         # go into a list.
         self.coin_list = None
         self.wall_list = None
         self.player_list = None
-
-        # Separate variable that holds the player sprite
-        self.player_sprite = None
 
         # Our physics engine
         self.physics_engine = None
@@ -59,8 +58,6 @@ class MyGame(arcade.Window):
         self.collect_coin_sound = arcade.load_sound(':resources:sounds/coin1.wav')
 
         self.player = build_world.create_player(self)
-
-        arcade.set_background_color(arcade.csscolor.CORNFLOWER_BLUE)
 
     def setup(self):
         """ Set up the game here. Call this function to restart the game. """

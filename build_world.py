@@ -17,6 +17,7 @@ def start_level(gi):
     gi.coin_list = game.arcade.SpriteList(use_spatial_hash=True)
 
     create_ground(gi)
+    game.arcade.set_background_color(game.arcade.csscolor.CORNFLOWER_BLUE)
 
     # Create the 'physics engine'
     gi.physics_engine = game.arcade.PhysicsEnginePlatformer(gi.player, gi.wall_list, game.GRAVITY)
