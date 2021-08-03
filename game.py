@@ -58,6 +58,8 @@ class MyGame(arcade.Window):
         self.jump_sound = arcade.load_sound(':resources:sounds/jump1.wav')
         self.collect_coin_sound = arcade.load_sound(':resources:sounds/coin1.wav')
 
+        self.player = build_world.create_player(self)
+
         arcade.set_background_color(arcade.csscolor.CORNFLOWER_BLUE)
 
     def setup(self):
@@ -71,7 +73,7 @@ class MyGame(arcade.Window):
         # Draw our sprites
         self.wall_list.draw()
         self.coin_list.draw()
-        self.player_list.draw()
+        self.player.draw()
 
         # Draw score on the screen, scrolling
         score_text = f'Score: {self.score}'
@@ -81,20 +83,21 @@ class MyGame(arcade.Window):
 
     def on_key_press(self, key, modifiers):
         """Called whenever a key is pressed. """
-        player_controller.input_press(self, key, self.player_sprite)
+        player_controller.input_press(self, key, self.player)
 
     def on_key_release(self, key, modifiers):
         """Called when the user releases a key. """
-        player_controller.input_release(key, self.player_sprite)
+        player_controller.input_release(key, self.player)
 
     def on_update(self, delta_time):
         """ Movement and game logic """
+        self.player.update_animation(delta_time)
         # Move the player with the physics engine
         self.physics_engine.update()
 
-        coin_hit_list = arcade.check_for_collision_with_list(self.player_sprite, self.coin_list)
+        coin_hit_list = arcade.check_for_collision_with_list(self.player, self.coin_list)
         for coin in coin_hit_list:
-            coin.collided(self.player_sprite)
+            coin.collided(self.player)
             self.score += coin.value
 
         view.scroll(self)

@@ -16,22 +16,64 @@ def start_level(gi):
     gi.wall_list = game.arcade.SpriteList(use_spatial_hash=True)
     gi.coin_list = game.arcade.SpriteList(use_spatial_hash=True)
 
-    create_player(gi)
-
     create_ground(gi)
 
     # Create the 'physics engine'
-    gi.physics_engine = game.arcade.PhysicsEnginePlatformer(gi.player_sprite, gi.wall_list, game.GRAVITY)
+    gi.physics_engine = game.arcade.PhysicsEnginePlatformer(gi.player, gi.wall_list, game.GRAVITY)
 
 
 def create_player(gi):
     # Set up the player, specifically placing it at these coordinates.
-    gi.player_sprite = game.arcade.Sprite(
-        ":resources:images/animated_characters/female_adventurer/femaleAdventurer_idle.png",
-        game.CHARACTER_SCALING)
-    gi.player_sprite.center_x = 64
-    gi.player_sprite.center_y = 128
-    gi.player_list.append(gi.player_sprite)
+    texture_path = 'assets/img/player/'
+    walking_path = [
+        texture_path + f'player_walk{x}.png' for x in (1, 2)
+    ]
+    climbing_path = [
+        texture_path + f'player_climb{x}.png' for x in (1, 2)
+    ]
+    standing_path = [
+        texture_path + f'player_stand.png'
+    ]
+
+    # Load the textures
+    walking_right_textures = [
+        game.arcade.load_texture(texture) for texture in walking_path
+    ]
+    walking_left_textures = [
+        game.arcade.load_texture(texture, mirrored=True) for texture in walking_path
+    ]
+    walking_up_textures = [
+        game.arcade.load_texture(texture) for texture in climbing_path
+    ]
+    walking_down_textures = [
+        game.arcade.load_texture(texture) for texture in climbing_path
+    ]
+    standing_right_textures = [
+        game.arcade.load_texture(texture) for texture in standing_path
+    ]
+    standing_left_textures = [
+        game.arcade.load_texture(texture, mirrored=True) for texture in standing_path
+    ]
+
+    # Create the sprite
+    player = game.arcade.AnimatedWalkingSprite()
+
+    # Add the proper textures
+    player.stand_left_textures = standing_left_textures
+    player.stand_right_textures = standing_right_textures
+    player.walk_right_textures = walking_right_textures
+    player.walk_left_textures = walking_left_textures
+    player.walk_up_textures = walking_up_textures
+    player.walk_down_textures = walking_down_textures
+
+    # Set the player defaults
+    player.center_x = 64
+    player.center_y = 128
+    player_state = game.arcade.FACE_RIGHT
+    # Set the initial texture
+    player.texture = player.stand_right_textures[0]
+
+    return player
 
 
 def create_ground(gi):
